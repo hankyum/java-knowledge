@@ -16,14 +16,14 @@ public class MySemaphore extends Thread {
 	public void run() {
 		try {
 			if (position.availablePermits() > 0) {
-				System.out.println("�˿�[" + this.id + "]����������п�λ");
+				System.out.println("有空闲 [" + this.id + "] ");
 			} else {
-				System.out.println("�˿�[" + this.id + "]���������û��λ���Ŷ�");
+				System.out.println("没有空闲[" + this.id + "] 等待");
 			}
 			position.acquire();
-			System.out.println("�˿�[" + this.id + "]��ÿ�λ");
+			System.out.println("使用 [" + this.id + "] 开始");
 			Thread.sleep((int) (Math.random() * 1000));
-			System.out.println("�˿�[" + this.id + "]ʹ�����");
+			System.out.println("使用 [" + this.id + "] 结束");
 			position.release();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -39,7 +39,7 @@ public class MySemaphore extends Thread {
 		list.shutdown();
 
 		position.acquireUninterruptibly(5);
-		System.out.println("ʹ����ϣ���Ҫ��ɨ��");
+		System.out.println("程序结束");
 		position.release(5);
 	}
 }
