@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 /**
  * Created by hguo on 4/23/16.
  */
-public class RunTime {
+public class ExecuteCommandTest {
     /**
      * executeCommand
      *
@@ -30,7 +30,7 @@ public class RunTime {
 
     public static void main(String[] args) {
         try {
-            RunTime.executeCommand("/bin/sh", "-c", "ps -ewf | grep google | awk '{print $0}'");
+            ExecuteCommandTest.executeCommand("/bin/sh", "-c", "ps -ewf | grep google | awk '{print $0}'");
         } catch (IOException e) {
             e.printStackTrace();
         }
