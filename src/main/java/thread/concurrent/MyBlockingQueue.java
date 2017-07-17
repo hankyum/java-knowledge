@@ -3,7 +3,7 @@ package thread.concurrent;
 import java.util.concurrent.*;
 
 public class MyBlockingQueue extends Thread {
-    public static BlockingQueue<String> queue = new LinkedBlockingQueue<String>(3);
+    public static BlockingQueue<String> queue = new LinkedBlockingQueue<>(3);
     private int index;
 
     public MyBlockingQueue(int i) {
