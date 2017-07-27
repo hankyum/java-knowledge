@@ -1,4 +1,4 @@
-package morgan;
+package interview.morgan;
 
 /**
  * Created by hguo on 7/10/17.

@@ -1,4 +1,4 @@
-package morgan;
+package interview.morgan;
 
 import java.util.Iterator;
 import java.util.TreeSet;

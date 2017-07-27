@@ -1,4 +1,4 @@
-package morgan;
+package interview.morgan;
 
 class Circus {
     public static void main(String[] args) {

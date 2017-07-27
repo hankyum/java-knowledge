@@ -3,64 +3,37 @@ package thread.concurrent;
 import java.util.concurrent.*;
 
 public class MyBlockingQueue extends Thread {
-    public static BlockingQueue<String> queue = new LinkedBlockingQueue<>(3);
-    private int index;
-
-    public MyBlockingQueue(int i) {
-        this.index = i;
-    }
-
-    public void run() {
-        try {
-            queue.put(String.valueOf(this.index) + " value in queue.");
-            System.out.println("{" + this.index + "} in queue!");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public static void main(String args[]) {
-//        MyBlockingQueue.putFirstTest();
-        MyBlockingQueue.putAfterTest();
-    }
-
-    public static void putFirstTest() {
-        System.out.println("Put First test");
+        BlockingQueue<String> queue = new LinkedBlockingQueue<>(3);
+        CountDownLatch countDownLatch = new CountDownLatch(1);
         ExecutorService service = Executors.newCachedThreadPool();
         for (int i = 0; i < 10; i++) {
-            service.submit(new MyBlockingQueue(i));
-        }
-        service.submit(takeQueue());
-        service.shutdown();
-    }
-
-    public static void putAfterTest() {
-        System.out.println("Put after test");
-        ExecutorService service = Executors.newCachedThreadPool();
-        CountDownLatch begin = new CountDownLatch(1);
-        for (int i = 0; i < 10; i++) {
-            service.submit(new MyBlockingQueue(i));
-        }
-        begin.countDown();
-        service.submit(takeQueue());
-        service.shutdown();
-    }
-
-    public static Thread takeQueue() {
-        return new Thread() {
-            public void run() {
+            final String data = i + " value in queue";
+            service.execute(() -> {
                 try {
-                    while (true) {
-                        Thread.sleep((int) (Math.random() * 1000));
-                        if (MyBlockingQueue.queue.isEmpty()) {
-                            break;
-                        }
-                        System.out.println(MyBlockingQueue.queue.take() + " has been take!");
-                    }
+                    queue.put(data);
+                    System.out.println("put  -> " + data);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            });
+        }
+        service.execute(() -> {
+            try {
+                while (true) {
+                    countDownLatch.await();
+                    Thread.sleep((int) (Math.random() * 1000));
+                    if (queue.isEmpty()) {
+                        break;
+                    }
+                    System.out.println("take -> " + queue.take());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        };
+        });
+        countDownLatch.countDown();
+        service.shutdown();
     }
 }
